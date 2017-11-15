@@ -1,0 +1,14 @@
+parameters:
+  kms_encrypt.kms_client.options:
+    version: latest
+
+services:
+  kms_encrypt.kms_client:
+    class: Aws\Kms\KmsClient
+    factory: 'kms_encrypt.kms_client_factory:createInstance'
+    arguments: ['%kms_encrypt.kms_client.options%', '@config.factory']
+    public: false
+
+  kms_encrypt.kms_client_factory:
+    class: Drupal\kms_encrypt\KmsClientFactory
+    public: false
