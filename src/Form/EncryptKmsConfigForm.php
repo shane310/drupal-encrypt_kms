@@ -39,17 +39,24 @@ class EncryptKmsConfigForm extends ConfigFormBase {
       '#title' => t('AWS Secret'),
       '#default_value' => $config->get('aws_secret'),
     ];
+    $form['aws_region'] = [
+      '#type' => 'textfield',
+      '#title' => t('AWS Region'),
+      '#description' => t('The region which contains the KMS key(s)')
+      '#default_value' => $config->get('aws_region'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitFormSuccess(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('encrypt_kms.settings');
     $config
       ->set('aws_key', $form_state->getValue('aws_key'))
       ->set('aws_secret', $form_state->getValue('aws_secret'))
+      ->set('aws_region', $form_state->getValue('aws_region'))
       ->save();
 
     parent::submitForm($form, $form_state);
