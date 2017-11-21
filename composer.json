@@ -5,6 +5,7 @@
   "license": "GPL-2.0+",
   "homepage": "https://www.drupal.org/project/encrypt_kms",
   "require": {
+    "drupal/encrypt": "^1.0@alpha",
     "aws/aws-sdk-php": "~3.0"
-  },
+  }
 }
