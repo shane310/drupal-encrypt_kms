@@ -22,3 +22,5 @@ workflows:
     filters:
       tags:
         only: /.*/
+      branches:
+        only: /[7-9].x-.*/
