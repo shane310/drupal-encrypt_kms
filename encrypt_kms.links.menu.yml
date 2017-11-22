@@ -1,3 +1,4 @@
+---
 encrypt_kms.admin:
   title: 'Encrypt KMS'
   route_name: encrypt_kms.admin
