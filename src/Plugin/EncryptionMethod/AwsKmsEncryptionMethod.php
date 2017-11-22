@@ -45,7 +45,7 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    * {@inheritdoc}
    */
   public function encrypt($text, $key, $options = []) {
-    $client = \Drupal::service('kms_encrypt.kms_client');
+    $client = \Drupal::service('encrypt_kms.kms_client');
     try {
       $result = $client->encrypt([
         'KeyId' => $key,
@@ -63,7 +63,7 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    * {@inheritdoc}
    */
   public function decrypt($text, $key, $options = []) {
-    $client = \Drupal::service('kms_encrypt.kms_client');
+    $client = \Drupal::service('encrypt_kms.kms_client');
     try {
       $result = $client->decrypt([
         'KeyId' => $key,
