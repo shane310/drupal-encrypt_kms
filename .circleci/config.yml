@@ -3,7 +3,7 @@ version: 2
 jobs:
   sync_drupalorg:
     docker:
-      - image: nicksantamaria/utilities
+      - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
     working_directory: /data
     environment:
       GIT_MIRROR_URL: nickurbits@git.drupal.org:sandbox/nickurbits/2923717.git
@@ -13,9 +13,22 @@ jobs:
         command: git remote add drupal "${GIT_MIRROR_URL}"
       - name: Push to drupal.org git remote
         command: git push --tags drupal "${CIRCLE_BRANCH}"
+  lint:
+    docker:
+      - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
+    working_directory: /data
+    steps:
+      - checkout
+      - name: Ensure yaml files are valid
+        command: yamllint /data
+      - name: Ensure json files are valid
+        command: cat /data/composer.json | jq .
 
 workflows:
   version: 2
+  main:
+    jobs:
+      - lint
   sync:
     jobs:
       - sync_drupalorg
