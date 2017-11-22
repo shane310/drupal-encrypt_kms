@@ -2,10 +2,8 @@
   "name": "drupal/encrypt_kms",
   "description": "Provides an AWS KMS encryption method for Encrypt though the AWS SDK.",
   "type": "drupal-module",
-  "license": "GPL-2.0+",
   "homepage": "https://www.drupal.org/project/encrypt_kms",
   "require": {
-    "drupal/encrypt": "^1.0@alpha",
     "aws/aws-sdk-php": "~3.0"
   }
 }
