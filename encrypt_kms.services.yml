@@ -8,7 +8,6 @@ services:
     class: Aws\Kms\KmsClient
     factory: 'encrypt_kms.kms_client_factory:createInstance'
     arguments: ['%encrypt_kms.kms_client.options%', '@config.factory']
-    public: false
 
   encrypt_kms.kms_client_factory:
     class: Drupal\encrypt_kms\KmsClientFactory
