@@ -35,11 +35,11 @@ class KmsClientFactory {
         'key' => $awsKey,
         'secret' => $awsSecret,
       ];
-     }
+    }
 
-     $options['region'] = $awsRegion;
-     $options['version'] = 'latest';
-     return new KmsClient($options);
+    $options['region'] = $awsRegion;
+    $options['version'] = 'latest';
+    return new KmsClient($options);
   }
 
 }

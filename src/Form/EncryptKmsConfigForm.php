@@ -42,7 +42,7 @@ class EncryptKmsConfigForm extends ConfigFormBase {
     $form['aws_region'] = [
       '#type' => 'textfield',
       '#title' => t('AWS Region'),
-      '#description' => t('The region which contains the KMS key(s)')
+      '#description' => t('The region which contains the KMS key(s)'),
       '#default_value' => $config->get('aws_region'),
     ];
     return parent::buildForm($form, $form_state);

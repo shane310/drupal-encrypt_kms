@@ -3,9 +3,7 @@
 namespace Drupal\encrypt_kms\Plugin\EncryptionMethod;
 
 use Drupal\encrypt\EncryptionMethodInterface;
-use Drupal\encrypt\Exception\EncryptException;
 use Drupal\encrypt\Plugin\EncryptionMethod\EncryptionMethodBase;
-use Drupal\encrypt_kms\KmsClientFactory;
 use Masterminds\HTML5\Exception;
 
 /**
@@ -27,13 +25,11 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    */
   protected $settings;
 
-
-
   /**
    * {@inheritdoc}
    */
   public function checkDependencies($text = NULL, $key = NULL) {
-    $errors = array();
+    $errors = [];
 
     if (!class_exists('\Aws\Kms\KmsClient')) {
       $errors[] = $this->t('AWS KMS PHP library is not correctly installed.');
@@ -42,15 +38,13 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
     $config = \Drupal::config('encrypt_kms');
 
     // @todo Check AWS credentials exist
-    // Check KMS key ID configured
-
     return $errors;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function encrypt($text, $key, $options = array()) {
+  public function encrypt($text, $key, $options = []) {
     $client = \Drupal::service('kms_encrypt.kms_client');
     try {
       $result = $client->encrypt([
@@ -68,7 +62,7 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
   /**
    * {@inheritdoc}
    */
-  public function decrypt($text, $key, $options = array()) {
+  public function decrypt($text, $key, $options = []) {
     $client = \Drupal::service('kms_encrypt.kms_client');
     try {
       $result = $client->decrypt([
