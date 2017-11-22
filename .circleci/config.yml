@@ -27,6 +27,13 @@ jobs:
       - run:
           name: Ensure json files are valid
           command: cat /data/composer.json | jq .
+      - run:
+          name: Ensure PHP meets Drupal code standards
+          command: |
+            phpcs \
+              --standard=Drupal \
+              --extensions=php,module,inc,install,test,profile,theme,css,info \
+              /data
 
 workflows:
   version: 2
