@@ -1,3 +1,4 @@
+---
 name: Encrypt KMS
 description: "Provides an AWS KMS encryption method for Encrypt though the AWS SDK."
 core: 8.x

@@ -1,3 +1,4 @@
+---
 encrypt_kms.admin:
   path: 'admin/config/system/encrypt_kms'
   defaults:
