@@ -9,20 +9,24 @@ jobs:
       GIT_MIRROR_URL: nickurbits@git.drupal.org:sandbox/nickurbits/2923717.git
     steps:
       - checkout
-      - name: Add drupal.org git remote
-        command: git remote add drupal "${GIT_MIRROR_URL}"
-      - name: Push to drupal.org git remote
-        command: git push --tags drupal "${CIRCLE_BRANCH}"
+      - run:
+          name: Add drupal.org git remote
+          command: git remote add drupal "${GIT_MIRROR_URL}"
+      - run:
+          name: Push to drupal.org git remote
+          command: git push --tags drupal "${CIRCLE_BRANCH}"
   lint:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
     working_directory: /data
     steps:
       - checkout
-      - name: Ensure yaml files are valid
-        command: yamllint /data
-      - name: Ensure json files are valid
-        command: cat /data/composer.json | jq .
+      - run:
+          name: Ensure yaml files are valid
+          command: yamllint /data
+      - run:
+          name: Ensure json files are valid
+          command: cat /data/composer.json | jq .
 
 workflows:
   version: 2
@@ -31,9 +35,9 @@ workflows:
       - lint
   sync:
     jobs:
-      - sync_drupalorg
-    filters:
-      tags:
-        only: /.*/
-      branches:
-        only: /[7-9].x-.*/
+      - sync_drupalorg:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /[7-9].x-.*/
