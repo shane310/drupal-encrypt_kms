@@ -33,6 +33,7 @@ jobs:
             phpcs \
               --standard=Drupal \
               --extensions=php,module,inc,install,test,profile,theme,css,info \
+              --ignore=*.md \
               /data
 
 workflows:
