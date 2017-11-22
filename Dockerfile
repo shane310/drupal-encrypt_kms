@@ -25,5 +25,5 @@ RUN composer global config minimum-stability dev && \
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 RUN mkdir -p ~/.ssh && \
-    echo "Host * \
-    StrictHostKeyChecking no" >> ~/.ssh/config
+    echo "Host git.drupal.org" >> ~/.ssh/config && \
+    echo "  StrictHostKeyChecking no" >> ~/.ssh/config
