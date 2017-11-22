@@ -23,3 +23,7 @@ RUN composer global config minimum-stability dev && \
     "dealerdirect/phpcodesniffer-composer-installer"
 
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
+RUN mkdir -p ~/.ssh && \
+    echo "Host * \
+    StrictHostKeyChecking no" >> ~/.ssh/config
