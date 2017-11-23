@@ -26,7 +26,7 @@ Add a new **Encryption Profile** - choose the **Amazon KMS** encryption method a
 
 Go to the **Encrypt KMS** configuration form and add your AWS IAM user credentials.
 
-> PROTIP: Use the **8.x-1.x-dev** version of Key module and use their configuration override functionality to securely store the AWS credentials.
+> PROTIP: Use the Key module's configuration override capability to securely store the AWS credentials.
 
 Great, you are now set up and can use KMS to encrypt [fields](https://www.drupal.org/project/field_encrypt), [webform submissions](https://www.drupal.org/project/webform_encrypt) and lots more.
 
