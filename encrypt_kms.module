@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains module hooks for encrypt_kms.
+ */
+
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
