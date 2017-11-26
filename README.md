@@ -30,6 +30,25 @@ Go to the **Encrypt KMS** configuration form and add your AWS IAM user credentia
 
 Great, you are now set up and can use KMS to encrypt [fields](https://www.drupal.org/project/field_encrypt), [webform submissions](https://www.drupal.org/project/webform_encrypt) and lots more.
 
+### AWS Credentials
+
+There are alternatives to configuring the AWS credentials in the admin form.
+
+**settings.php**
+
+```
+$config['encrypt_kms.settings']['aws_key'] = 'foo';
+$config['encrypt_kms.settings']['aws_secret'] = 'bar';
+```
+
+If you do not explicitly set AWS key and secret in config, it will fall back to:
+
+* IAM Instance Profile
+* Exported credentials in environment variables
+* The default profile in a `~/.aws/credentials` file
+
+See the AWS SDK Guide on [Credentials](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html).
+
 ## Contribute
 
 Development of this module takes place on [GitHub](https://github.com/nicksantamaria/drupal-encrypt_kms).
