@@ -55,4 +55,7 @@ See the AWS SDK Guide on [Credentials](http://docs.aws.amazon.com/aws-sdk-php/v3
 
 Development of this module takes place on [GitHub](https://github.com/nicksantamaria/drupal-encrypt_kms).
 
-Feel free to fork this repo and make pull requests!
+* If you encounter issues, please [search the backlog](https://github.com/nicksantamaria/drupal-encrypt_kms/issues).
+* Please [create issues](https://github.com/nicksantamaria/drupal-encrypt_kms/issues/new?labels=bug) and [feature requests](https://github.com/nicksantamaria/drupal-encrypt_kms/issues/new?labels=enhancement) in GitHub.
+* Even better, feel free to fork this repo and [make pull requests](https://github.com/nicksantamaria/drupal-encrypt_kms/compare).
+
