@@ -20,6 +20,8 @@ Ensure this module and its dependencies are available in your codebase.
 
 Enable the **Encrypt KMS** module.
 
+Ensure your user account has the **administer encrypt** permission.
+
 Add a new Key - select the **KMS Key** type and enter the ARN of the KMS key. This is just an identifier, and is completely fine to store in the "Configuration" storage provider.
 
 Add a new **Encryption Profile** - choose the **Amazon KMS** encryption method and the key you just created.
