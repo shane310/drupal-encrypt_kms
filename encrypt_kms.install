@@ -49,7 +49,7 @@ function encrypt_kms_requirements($phase) {
       }
 
       try {
-        $stsClient = new \Aws\Sts\StsClient($options);
+        $stsClient = new \Aws\Sts\StsClient($options); // @codingStandardsIgnoreLine
         $result = $stsClient->getCallerIdentity();
         if (!empty($result['UserId'])) {
           $requirements['aws-creds']['severity'] = REQUIREMENT_OK;
