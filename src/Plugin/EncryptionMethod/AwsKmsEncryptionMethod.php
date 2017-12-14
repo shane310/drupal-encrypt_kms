@@ -35,9 +35,6 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
       $errors[] = $this->t('AWS KMS PHP library is not correctly installed.');
     }
 
-    $config = \Drupal::config('encrypt_kms');
-
-    // @todo Check AWS credentials exist
     return $errors;
   }
 
