@@ -52,6 +52,7 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
       return $result['CiphertextBlob'];
     }
     catch (Exception $e) {
+      watchdog_exception('encrypt_kms', $e);
       return FALSE;
     }
   }
@@ -70,6 +71,7 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
       return $result['Plaintext'];
     }
     catch (Exception $e) {
+      watchdog_exception('encrypt_kms', $e);
       return FALSE;
     }
   }
