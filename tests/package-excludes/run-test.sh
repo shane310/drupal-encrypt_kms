@@ -20,14 +20,28 @@ TMP_DIR=/tmp/package-excludes
 
 cleanup() {
   # Remove temporary files
-  # Restart services
   echo "cleaning up"
-  rm -rf "${TMP_DIR}"
+  rm -r "${TMP_DIR}"
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
   trap cleanup EXIT
 
   mkdir -p ${TMP_DIR}
-  git --git-dir="${GIT_DIR}" archive --format=tar --output="${TMP_DIR}/encrypt_kms.tar"
+  cd ${TMP_DIR}
+
+  RESULT="pass"
+  git --git-dir="${GIT_DIR}/.git" archive --format=tar --output="encrypt_kms.tar" HEAD
+  tar -vxxf encrypt_kms.tar
+  grep 'export-ignore' "${GIT_DIR}/.gitattributes" | awk '{print $1}' | while read FILE; do
+    MATCHES=$(find . -name "${FILE}")
+    if [[ ! -z "${MATCHES}" ]]; then
+      error "Excluded file found in package: ${FILE}"
+      RESULT="fail"
+    fi
+  done
+
+  if [ "${RESULT}" != "pass" ]; then
+    fatal "Test failed"
+  fi
 fi
