@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Push to drupal.org git remote
           command: git push --tags drupal "${CIRCLE_BRANCH}"
-  lint:
+  lint_test:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
     working_directory: /data
@@ -35,12 +35,15 @@ jobs:
               --extensions=php,module,inc,install,test,profile,theme,css,info \
               --ignore=*.md \
               /data
+      - run:
+          name: Test drupal.org packager excludes
+          command: bash ./tests/package-excludes/run-test.sh $(pwd)
 
 workflows:
   version: 2
   main:
     jobs:
-      - lint
+      - lint_test
   sync:
     jobs:
       - sync_drupalorg:
