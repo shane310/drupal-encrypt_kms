@@ -34,7 +34,7 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    * @var \Aws\Kms\KmsClient
    */
   protected $kmsClient;
-  
+
   /**
    * {@inheritdoc}
    */
@@ -42,13 +42,23 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
     /** @var self $instance */
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     return $instance
-      ->setKmsClient($container->get('encrypt_kms.kms_client');
+      ->setKmsClient($container->get('encrypt_kms.kms_client'));
   }
-  
+
+  /**
+   * Sets kmsClient property.
+   *
+   * @param \Aws\Kms\KmsClient $kmsClient
+   *   The KMS client.
+   *
+   * @return self
+   *   Current object.
+   */
   public function setKmsClient(KmsClient $kmsClient) {
     $this->kmsClient = $kmsClient;
+    return $this;
   }
-                     
+
   /**
    * {@inheritdoc}
    */
