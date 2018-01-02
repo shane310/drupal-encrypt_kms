@@ -5,6 +5,9 @@ namespace Drupal\encrypt_kms\Plugin\EncryptionMethod;
 use Drupal\encrypt\EncryptionMethodInterface;
 use Drupal\encrypt\Plugin\EncryptionMethod\EncryptionMethodBase;
 use Masterminds\HTML5\Exception;
+use Aws\Kms\KmsClient;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AwsKmsEncryptionMethod.
@@ -16,7 +19,7 @@ use Masterminds\HTML5\Exception;
  *   key_type = {"aws_kms"}
  * )
  */
-class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionMethodInterface {
+class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionMethodInterface, ContainerFactoryPluginInterface {
 
   /**
    * The settings.
@@ -24,6 +27,37 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    * @var \Drupal\Core\Config\ImmutableConfig
    */
   protected $settings;
+
+  /**
+   * The KMS client.
+   *
+   * @var \Aws\Kms\KmsClient
+   */
+  protected $kmsClient;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    /** @var self $instance */
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    return $instance
+      ->setKmsClient($container->get('encrypt_kms.kms_client'));
+  }
+
+  /**
+   * Sets kmsClient property.
+   *
+   * @param \Aws\Kms\KmsClient $kmsClient
+   *   The KMS client.
+   *
+   * @return self
+   *   Current object.
+   */
+  public function setKmsClient(KmsClient $kmsClient) {
+    $this->kmsClient = $kmsClient;
+    return $this;
+  }
 
   /**
    * {@inheritdoc}
@@ -42,9 +76,8 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    * {@inheritdoc}
    */
   public function encrypt($text, $key, $options = []) {
-    $client = \Drupal::service('encrypt_kms.kms_client');
     try {
-      $result = $client->encrypt([
+      $result = $this->kmsClient->encrypt([
         'KeyId' => $key,
         'Plaintext' => $text,
       ]);
@@ -61,9 +94,8 @@ class AwsKmsEncryptionMethod extends EncryptionMethodBase implements EncryptionM
    * {@inheritdoc}
    */
   public function decrypt($text, $key, $options = []) {
-    $client = \Drupal::service('encrypt_kms.kms_client');
     try {
-      $result = $client->decrypt([
+      $result = $this->kmsClient->decrypt([
         'KeyId' => $key,
         'CiphertextBlob' => $text,
       ]);
