@@ -4,10 +4,7 @@
 | ------ | ------------ |
 | [8.x-1.x](https://www.drupal.org/project/encrypt_kms/releases/8.x-1.x-dev) | [![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser/master.svg?style=for-the-badge)](https://circleci.com/gh/nicksantamaria/drupal-encrypt_kms/tree/8.x-1.x) |
 
-
 This Drupal module adds a new encryption method for the [Encrypt framework](https://www.drupal.org/project/encrypt) - it allows you to encrypt data using [AWS KMS](https://aws.amazon.com/kms/).
-
-> This module is experimental and under heavy development, please carefully consider it's suitability for production use in its current form.
 
 ## Get Started
 This guide assumes you have an AWS account and working knowledge of KMS, and the following resources provisioned in AWS.
