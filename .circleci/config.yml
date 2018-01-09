@@ -103,20 +103,9 @@ workflows:
   main:
     jobs:
       - lint
-  unit_tests:
-    jobs:
-      - test_83x:
-          filters:
-            branches:
-              only: /21-unit-tests/
-      - test_84x:
-          filters:
-            branches:
-              only: /21-unit-tests/
-      - test_85x:
-          filters:
-            branches:
-              only: /21-unit-tests/
+      - test_83x
+      - test_84x
+      - test_85x
   sync:
     jobs:
       - sync_drupalorg:
