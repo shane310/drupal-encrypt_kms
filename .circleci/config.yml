@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Push to drupal.org git remote
           command: git push --tags drupal "${CIRCLE_BRANCH}"
-  lint_test:
+  lint:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
     working_directory: /data
@@ -38,12 +38,85 @@ jobs:
       - run:
           name: Test drupal.org packager excludes
           command: bash ./tests/package-excludes/run-test.sh $(pwd)
-
+  test: &test
+    docker:
+      - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
+        environment:
+          SIMPLETEST_BASE_URL: http://127.0.0.1
+          SIMPLETEST_DB: mysql://drupal:drupal@127.0.0.1/local
+      - image: mariadb
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: local
+          MYSQL_USER: drupal
+          MYSQL_PASSWORD: drupal
+    working_directory: /data/app
+    steps:
+      - run:
+          name: Download specified drupal version
+          command: |
+            git clone --depth 1 --branch ${DRUPAL_BRANCH} \
+              git://drupalcode.org/project/drupal.git .
+      - run:
+          name: Fetch drupal dependencies
+          command: composer install --prefer-dist --no-progress
+      - checkout:
+          path: /data/app/modules/encrypt_kms
+      - run:
+          name: Fetch encrypt_kms dependencies
+          command: |
+            cat modules/encrypt_kms/composer.json \
+              | jq '.require | keys[] as $k | "\($k)=\(.[$k])@dev"' \
+              | xargs composer require --no-progress
+      - run:
+          name: Install drupal
+          command: |
+            mkdir -p sites/default/files/tmp sites/default/private
+            chmod -R 777 sites/default/files sites/default/private
+            $DRUSH -yv site-install minimal --db-url="${SIMPLETEST_DB}"
+            $DRUSH -yv en encrypt_kms simpletest
+          environment:
+            DRUSH: "/root/.composer/vendor/bin/drush"
+      - run: service apache2 restart
+      - run:
+          name: Run unit tests
+          command: |
+            php core/scripts/run-tests.sh --verbose --color \
+              --concurrency 4 \
+              --url "${SIMPLETEST_BASE_URL}" \
+              --dburl "${SIMPLETEST_DB}" \
+              "encrypt_kms"
+  test_83x:
+    <<: *test
+    environment:
+      - DRUPAL_BRANCH: 8.3.x
+  test_84x:
+    <<: *test
+    environment:
+      - DRUPAL_BRANCH: 8.4.x
+  test_85x:
+    <<: *test
+    environment:
+      - DRUPAL_BRANCH: 8.5.x
 workflows:
   version: 2
   main:
     jobs:
-      - lint_test
+      - lint
+  unit_tests:
+    jobs:
+      - test_83x:
+          filters:
+            branches:
+              only: /21-unit-tests/
+      - test_84x:
+          filters:
+            branches:
+              only: /21-unit-tests/
+      - test_85x:
+          filters:
+            branches:
+              only: /21-unit-tests/
   sync:
     jobs:
       - sync_drupalorg:
