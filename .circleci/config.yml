@@ -38,6 +38,17 @@ jobs:
       - run:
           name: Test drupal.org packager excludes
           command: bash ./tests/package-excludes/run-test.sh $(pwd)
+  lint_infracode:
+    docker:
+      - image: wata727/tflint:latest
+    working_directory: /data
+    steps:
+      - checkout
+      - run:
+          name: Ensure terraform code is valid
+          command: |
+            cd ./infracode/terraform
+            tflint
   test: &test
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
@@ -98,11 +109,13 @@ jobs:
     <<: *test
     environment:
       - DRUPAL_BRANCH: 8.5.x
+
 workflows:
   version: 2
   main:
     jobs:
       - lint
+      - lint_infracode
       - test_83x
       - test_84x
       - test_85x
