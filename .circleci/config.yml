@@ -1,6 +1,7 @@
 ---
 version: 2
 jobs:
+  # Job syncs GitHub repository to git.drupal.org.
   sync_drupalorg:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
@@ -15,6 +16,7 @@ jobs:
       - run:
           name: Push to drupal.org git remote
           command: git push --tags drupal "${CIRCLE_BRANCH}"
+  # Job performs code style / validation tasks.
   lint:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
@@ -42,6 +44,7 @@ jobs:
           name: Ensure terraform code is valid
           command: tflint
           working_directory: /data/infracode/terraform
+  # Job template for running Drupal test suite against specified Drupal version.
   test: &test
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
