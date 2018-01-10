@@ -84,10 +84,8 @@ jobs:
           command: |
             mkdir -p sites/default/files/tmp sites/default/private
             chmod -R 777 sites/default/files sites/default/private
-            $DRUSH -yv site-install minimal --db-url="${SIMPLETEST_DB}"
-            $DRUSH -yv en encrypt_kms simpletest
-          environment:
-            DRUSH: "/root/.composer/vendor/bin/drush"
+            drush -yv site-install minimal --db-url="${SIMPLETEST_DB}"
+            drush -yv en encrypt_kms simpletest
       - run: service apache2 restart
       - run:
           name: Run unit tests
