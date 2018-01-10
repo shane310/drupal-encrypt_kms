@@ -88,10 +88,6 @@ jobs:
               --url "${SIMPLETEST_BASE_URL}" \
               --dburl "${SIMPLETEST_DB}" \
               "encrypt_kms"
-  test_83x:
-    <<: *test
-    environment:
-      - DRUPAL_BRANCH: 8.3.x
   test_84x:
     <<: *test
     environment:
@@ -106,7 +102,6 @@ workflows:
   main:
     jobs:
       - lint
-      - test_83x
       - test_84x
       - test_85x
   sync:
