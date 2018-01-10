@@ -38,12 +38,6 @@ jobs:
       - run:
           name: Test drupal.org packager excludes
           command: bash ./tests/package-excludes/run-test.sh $(pwd)
-  lint_infracode:
-    docker:
-      - image: wata727/tflint:latest
-    working_directory: /data
-    steps:
-      - checkout
       - run:
           name: Ensure terraform code is valid
           command: tflint
@@ -112,7 +106,6 @@ workflows:
   main:
     jobs:
       - lint
-      - lint_infracode
       - test_83x
       - test_84x
       - test_85x
