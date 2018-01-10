@@ -46,9 +46,8 @@ jobs:
       - checkout
       - run:
           name: Ensure terraform code is valid
-          command: |
-            cd ./infracode/terraform
-            tflint
+          command: tflint
+          working_directory: /data/infracode/terraform
   test: &test
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
