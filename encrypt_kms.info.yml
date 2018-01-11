@@ -7,3 +7,4 @@ type: module
 package: Security
 dependencies:
   - encrypt
+configure: encrypt_kms.admin
