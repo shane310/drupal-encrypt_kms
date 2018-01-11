@@ -15,7 +15,7 @@ jobs:
           command: git remote add drupal "${GIT_MIRROR_URL}"
       - run:
           name: Push to drupal.org git remote
-          command: git push --tags drupal "${CIRCLE_BRANCH}"
+          command: git push drupal "${CIRCLE_BRANCH:-refs/tags/${CIRCLE_TAG}}"
   # Job performs code style / validation tasks.
   lint:
     docker:
