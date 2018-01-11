@@ -1,6 +1,7 @@
 ---
 version: 2
 jobs:
+  # Job syncs GitHub repository to git.drupal.org.
   sync_drupalorg:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
@@ -14,7 +15,8 @@ jobs:
           command: git remote add drupal "${GIT_MIRROR_URL}"
       - run:
           name: Push to drupal.org git remote
-          command: git push --tags drupal "${CIRCLE_BRANCH}"
+          command: git push drupal "${CIRCLE_BRANCH:-refs/tags/${CIRCLE_TAG}}"
+  # Job performs code style / validation tasks.
   lint:
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
@@ -38,17 +40,11 @@ jobs:
       - run:
           name: Test drupal.org packager excludes
           command: bash ./tests/package-excludes/run-test.sh $(pwd)
-  lint_infracode:
-    docker:
-      - image: wata727/tflint:latest
-    working_directory: /data
-    steps:
-      - checkout
       - run:
           name: Ensure terraform code is valid
-          command: |
-            cd ./infracode/terraform
-            tflint
+          command: tflint
+          working_directory: /data/infracode/terraform
+  # Job template for running Drupal test suite against specified Drupal version.
   test: &test
     docker:
       - image: nicksantamaria/circleci-drupal-kms-encrypt:latest
@@ -84,10 +80,8 @@ jobs:
           command: |
             mkdir -p sites/default/files/tmp sites/default/private
             chmod -R 777 sites/default/files sites/default/private
-            $DRUSH -yv site-install minimal --db-url="${SIMPLETEST_DB}"
-            $DRUSH -yv en encrypt_kms simpletest
-          environment:
-            DRUSH: "/root/.composer/vendor/bin/drush"
+            drush -yv site-install minimal --db-url="${SIMPLETEST_DB}"
+            drush -yv en encrypt_kms simpletest
       - run: service apache2 restart
       - run:
           name: Run unit tests
@@ -97,10 +91,6 @@ jobs:
               --url "${SIMPLETEST_BASE_URL}" \
               --dburl "${SIMPLETEST_DB}" \
               "encrypt_kms"
-  test_83x:
-    <<: *test
-    environment:
-      - DRUPAL_BRANCH: 8.3.x
   test_84x:
     <<: *test
     environment:
@@ -115,8 +105,6 @@ workflows:
   main:
     jobs:
       - lint
-      - lint_infracode
-      - test_83x
       - test_84x
       - test_85x
   sync:
