@@ -99,6 +99,10 @@ jobs:
     <<: *test
     environment:
       - DRUPAL_BRANCH: 8.5.x
+  test_86x:
+    <<: *test
+    environment:
+      - DRUPAL_BRANCH: 8.6.x
 
 workflows:
   version: 2
@@ -107,6 +111,7 @@ workflows:
       - lint
       - test_84x
       - test_85x
+      - test_86x
   sync:
     jobs:
       - sync_drupalorg:
