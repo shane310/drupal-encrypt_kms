@@ -6,14 +6,14 @@ use Aws\Kms\KmsClient;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
- * Factory class for CloudFrontClient which checks for credentials in config.
+ * Factory class for KmsClient which checks for credentials in config.
  *
  * @package Drupal\encrypt_kms
  */
 class KmsClientFactory {
 
   /**
-   * Creates an AWS CloudFront Client instance.
+   * Creates an AWS KMS Client instance.
    *
    * @param array $options
    *   The default client options.
