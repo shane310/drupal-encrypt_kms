@@ -1,0 +1,23 @@
+---
+# Docker Compose stack for contrib development.
+version: "3"
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ".:/data/app/modules/encrypt_kms"
+      - ".dev/config/settings.php:/data/app/sites/default/settings.php"
+    env_file:
+      - ".dev/config/docker-compose.env"
+    ports:
+      - 80
+    entrypoint:
+      - /usr/local/bin/start
+  db:
+    image: mariadb
+    network_mode: service:app
+    env_file:
+      - ".dev/config/docker-compose.env"
+    volumes:
+      - ".dev/db:/docker-entrypoint-initdb.d"

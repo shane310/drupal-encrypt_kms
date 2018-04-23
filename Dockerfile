@@ -1,6 +1,4 @@
-FROM previousnext/php:7.1-dev
-
-WORKDIR /data
+FROM previousnext/php:7.2-dev
 
 # Install git, curl and yamllint.
 RUN apt-get update && \
@@ -31,3 +29,8 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 RUN mkdir -p ~/.ssh && \
     echo "Host git.drupal.org" >> ~/.ssh/config && \
     echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+
+WORKDIR /data
+COPY Makefile Makefile
+COPY composer.json composer.json
+RUN make init-core init-deps CORE_DIR=app CORE_BRANCH=8.5.x
