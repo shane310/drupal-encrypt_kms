@@ -8,3 +8,4 @@ package: Security
 dependencies:
   - encrypt:encrypt
 configure: encrypt_kms.admin
+core_version_requirement: ^8 || ^9
