@@ -1,5 +1,5 @@
 {
-  "name": "drupal/encrypt_kms",
+  "name": "shane310/encrypt_kms",
   "description": "Provides an AWS KMS encryption method for Encrypt though the AWS SDK.",
   "type": "drupal-module",
   "homepage": "https://www.drupal.org/project/encrypt_kms",
